@@ -1,0 +1,9 @@
+{
+    "extends": [
+        "@datenknoten/tslint-config"
+    ],
+    "rules": {
+        "newline-per-chained-call": false,
+        "no-submodule-imports": [true, "rxjs", "@angular/platform-browser", "@angular/core/testing", "codemirror", "hypermd"]
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "name": "@catamaran/hull",
+    "version": "0.1.0",
+    "description": "rumpf is an approach to make building secure scuttlebut applications more easy\r by providing a single interface for everything™.",
+    "main": "dist/index.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "test": "ts-node test/test.ts"
+    },
+    "keywords": [
+        "ssb",
+        "client"
+    ],
+    "author": "Tim Schumacher <tim@datenknoten.me>",
+    "license": "MIT",
+    "dependencies": {
+        "ssb-client": "4.6.0",
+        "pull-stream": "3.6.9",
+        "rxjs": "6.3.3"
+    },
+    "devDependencies": {
+        "@types/node": "^10.12.10",
+        "tslint": "^5.11.0",
+        "typescript": "^3.1.6",
+        "ts-node": "7.0.1",
+        "tslint-language-service": "0.9.9"
+    }
+}

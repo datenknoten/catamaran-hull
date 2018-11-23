@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_7sBAAOqaEeifYaYuXBJPGg" name="RumpfModel">
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_D3udMOqbEeifYaYuXBJPGg" name="string"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_HXVXoOqbEeifYaYuXBJPGg" name="number"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_IU7oUOqbEeifYaYuXBJPGg" name="boolean"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_Lmb1UOqbEeifYaYuXBJPGg" name="any"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_M72wIOqbEeifYaYuXBJPGg" name="undefined"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_OfCaIOqbEeifYaYuXBJPGg" name="null"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_QXfJgOqbEeifYaYuXBJPGg" name="unknown"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_SNWe8OqbEeifYaYuXBJPGg" name="Date"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_aQi5UOqbEeifYaYuXBJPGg" name="Core">
+    <packagedElement xmi:type="uml:Class" xmi:id="_bjSTkOqbEeifYaYuXBJPGg" name="Client" visibility="public">
+      <ownedAttribute xmi:id="_hDoWsOqbEeifYaYuXBJPGg" name="identity" type="_dw4MgOqbEeifYaYuXBJPGg" isUnique="false">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jK8ogOqbEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jK8ogeqbEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_KqR5oOqcEeifYaYuXBJPGg" name="Message">
+    <packagedElement xmi:type="uml:Class" xmi:id="_cnV8IOqcEeifYaYuXBJPGg" name="Message" visibility="public" isAbstract="true">
+      <ownedAttribute xmi:id="_mfRDgOqcEeifYaYuXBJPGg" name="id" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_pU_6gOqcEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_pU_6geqcEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_mg_h0OqcEeifYaYuXBJPGg" name="recievedAt" type="_SNWe8OqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tBlhAOqcEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tBlhAeqcEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_mitZEOqcEeifYaYuXBJPGg" name="createdAt" type="_SNWe8OqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xEmDcOqcEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xEmqgOqcEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_mkW-4OqcEeifYaYuXBJPGg" name="author" type="_dw4MgOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2CEDAOqcEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2CEDAeqcEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_D-VwoOqdEeifYaYuXBJPGg" name="sequence" type="_HXVXoOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_IKVP8OqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_IKVP8eqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_D_4owOqdEeifYaYuXBJPGg" name="hash" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_J2f20OqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_J2gd4OqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_EBxfIOqdEeifYaYuXBJPGg" name="previousMessageId" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Nb7FYOqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Nb7FYeqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_VV22EOqdEeifYaYuXBJPGg" name="messageType" type="_D3udMOqbEeifYaYuXBJPGg" isReadOnly="true">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YnF9UOqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YnF9UeqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_VYuj4OqdEeifYaYuXBJPGg" name="channel" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dmhrwOqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dmhrweqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_oeMY4OqdEeifYaYuXBJPGg" name="isMissing" type="_IU7oUOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_qu_W0OqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_qu_W0eqdEeifYaYuXBJPGg" value="1"/>
+        <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_xpIecOqdEeifYaYuXBJPGg" value="true"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_gSKyoOqdEeifYaYuXBJPGg" name="VoteMessage" visibility="public">
+      <generalization xmi:id="_ji_qMOqdEeifYaYuXBJPGg" general="_cnV8IOqcEeifYaYuXBJPGg"/>
+      <ownedAttribute xmi:id="_2OPBUOqdEeifYaYuXBJPGg" name="expression" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_3s-3QOqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_3s-3QeqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_2QFbcOqdEeifYaYuXBJPGg" name="link" type="_cnV8IOqcEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_54hhwOqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_54hhweqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_2R8coOqdEeifYaYuXBJPGg" name="value" type="_HXVXoOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8YSIwOqdEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8YSIweqdEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_V254MOqeEeifYaYuXBJPGg" name="ContactMessage" visibility="public">
+      <generalization xmi:id="_UL5dAOqgEeifYaYuXBJPGg" general="_cnV8IOqcEeifYaYuXBJPGg"/>
+      <ownedAttribute xmi:id="_j4nqAOqfEeifYaYuXBJPGg" name="contact" type="_dw4MgOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lF-1AOqfEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lF-1AeqfEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_j6erMOqfEeifYaYuXBJPGg" name="action" type="_H8lngOqgEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RVmlUOqgEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RVmlUeqgEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_H8lngOqgEeifYaYuXBJPGg" name="ContactActionType" visibility="public">
+      <ownedLiteral xmi:id="_MDyGYOqgEeifYaYuXBJPGg" name="Follow"/>
+      <ownedLiteral xmi:id="_MFR7MOqgEeifYaYuXBJPGg" name="Unfollow"/>
+      <ownedLiteral xmi:id="_MGzlMOqgEeifYaYuXBJPGg" name="Ban"/>
+      <ownedLiteral xmi:id="_MTYBkOqgEeifYaYuXBJPGg" name="Unban"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ICE3kOq4EeifYaYuXBJPGg" name="PostMessage" visibility="public">
+      <generalization xmi:id="_cuSn8Oq4EeifYaYuXBJPGg" general="_cnV8IOqcEeifYaYuXBJPGg"/>
+      <ownedAttribute xmi:id="_LooHgOq4EeifYaYuXBJPGg" name="text" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MmbzkOq4EeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MmcaoOq4EeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_LqM00Oq4EeifYaYuXBJPGg" name="mentions" type="_PiGTcOq4EeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bzjeAOq4EeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bzjeAeq4EeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_PiGTcOq4EeifYaYuXBJPGg" name="Mention" visibility="public">
+      <ownedAttribute xmi:id="_XOVmYOq4EeifYaYuXBJPGg" name="link" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YIbQEOq4EeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YIbQEeq4EeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_XQOcwOq4EeifYaYuXBJPGg" name="name" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZyY3gOq4EeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZyY3geq4EeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_MI_6YOqcEeifYaYuXBJPGg" name="Identity">
+    <packagedElement xmi:type="uml:Class" xmi:id="_dw4MgOqbEeifYaYuXBJPGg" name="Identity" visibility="public">
+      <ownedAttribute xmi:id="_714bwOqcEeifYaYuXBJPGg" name="id" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9FoMYOqcEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_9FozcOqcEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_Cg7z8OqcEeifYaYuXBJPGg" name="key" type="_tDQKYOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EDrZEOqcEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EDrZEeqcEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_rSBGMOqvEeifYaYuXBJPGg" name="isSelf" type="_IU7oUOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_shCeEOqvEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_shCeEeqvEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_odaAoOqbEeifYaYuXBJPGg" name="primaryName" type="_ufCtwOqtEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rDpqIOqbEeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rDpqIeqbEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_lZwpcOqbEeifYaYuXBJPGg" name="names" type="_ufCtwOqtEeifYaYuXBJPGg" isUnique="false">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nE1rMOqbEeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nE1rMeqbEeifYaYuXBJPGg" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ZEW4YOquEeifYaYuXBJPGg" name="primaryImage" type="_DxFIAOquEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lfx3QOquEeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lfx3QequEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ZakY8OquEeifYaYuXBJPGg" name="images" type="_DxFIAOquEeifYaYuXBJPGg" isUnique="false">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_oHA_QOquEeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oHA_QequEeifYaYuXBJPGg" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ZfgjUOquEeifYaYuXBJPGg" name="primaryDescription" type="_OxFRwOquEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_riWdsOquEeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_riXEwOquEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_tVjgsOquEeifYaYuXBJPGg" name="descriptions" type="_OxFRwOquEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xPgNwOquEeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xPgNwequEeifYaYuXBJPGg" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_tDQKYOqbEeifYaYuXBJPGg" name="Key" visibility="public">
+      <ownedAttribute xmi:id="_2sGT8OqbEeifYaYuXBJPGg" name="curve" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4z2DkOqbEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4z2DkeqbEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_2vLdIOqbEeifYaYuXBJPGg" name="publicPart" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6HYvEOqbEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6HYvEeqbEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_2yOxIOqbEeifYaYuXBJPGg" name="privatePart" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9t7_AOqbEeifYaYuXBJPGg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_9t7_AeqbEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_25EY8OqbEeifYaYuXBJPGg" name="id" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__ZwAkOqbEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__ZwAkeqbEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ufCtwOqtEeifYaYuXBJPGg" name="IdentityName" visibility="public">
+      <ownedAttribute xmi:id="_wZlH0OqtEeifYaYuXBJPGg" name="name" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xZTfcOqtEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xZTfceqtEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_wa3hQOqtEeifYaYuXBJPGg" name="giver" type="_dw4MgOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_y1w2YOqtEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_y1xdcOqtEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_wiYegOqtEeifYaYuXBJPGg" name="weight" type="_HXVXoOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0yu5YOqtEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0yvgcOqtEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_DxFIAOquEeifYaYuXBJPGg" name="IdentityImage" visibility="public">
+      <ownedAttribute xmi:id="_Ff3lEOquEeifYaYuXBJPGg" name="blobId" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Hn8r4OquEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Hn8r4equEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_FhxCgOquEeifYaYuXBJPGg" name="giver" type="_dw4MgOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_J3Fc8OquEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_J3GEAOquEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_FiiekOquEeifYaYuXBJPGg" name="weight" type="_HXVXoOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_K8MD0OquEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_K8MD0equEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_OxFRwOquEeifYaYuXBJPGg" name="IdentityDescription" visibility="public">
+      <ownedAttribute xmi:id="_TjpB0OquEeifYaYuXBJPGg" name="description" type="_D3udMOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UsWWUOquEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UsW9YOquEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_TlxIwOquEeifYaYuXBJPGg" name="giver" type="_dw4MgOqbEeifYaYuXBJPGg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YfHdUOquEeifYaYuXBJPGg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YfHdUequEeifYaYuXBJPGg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>
