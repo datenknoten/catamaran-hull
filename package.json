@@ -1,6 +1,6 @@
 {
     "name": "@catamaran/hull",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "rumpf is an approach to make building secure scuttlebut applications more easy\r by providing a single interface for everything™.",
     "main": "dist/index.js",
     "directories": {
