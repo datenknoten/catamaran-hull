@@ -1,5 +1,3 @@
-import * as util from 'util';
-
 import { Identity } from "../models/identity/identity.model";
 import { IdentityImage } from '../models/identity/identity-image.model';
 import { IdentityName } from '../models/identity/identity-name.model';
@@ -13,7 +11,15 @@ export class IdentityClient extends AbstractClient {
     }
 
     public async whoami() {
-        const whoami = await util.promisify(this.sbot.whoami)();
+        const whoami = await (new Promise<any>((resolve, reject) => {
+            this.sbot.whoami((error: any, data: any) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(data);
+            });
+        }));
+
         if (!(this.selfIdentity instanceof Identity)) {
             this.selfIdentity = this.factory.getIdentity(whoami.id);
             this.selfIdentity.isSelf = true;

@@ -1,5 +1,6 @@
 {
     "name": "@catamaran/hull",
+    "public": true,
     "version": "0.2.0",
     "description": "rumpf is an approach to make building secure scuttlebut applications more easy\r by providing a single interface for everything™.",
     "main": "dist/index.js",
@@ -7,6 +8,7 @@
         "doc": "docs"
     },
     "scripts": {
+        "build": "tsc",
         "test": "ts-node test/test.ts"
     },
     "keywords": [

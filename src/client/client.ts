@@ -1,5 +1,3 @@
-import * as util from 'util';
-
 import { ObjectFactory } from '../helpers/object-factory';
 
 import { IdentityClient } from './identity.client';
@@ -16,7 +14,7 @@ export class Client {
 
 
 
-    private constructor(sbot: any) {
+    private constructor(sbot?: any) {
         this.sbot = sbot;
         this.factory = new ObjectFactory();
         this.identity = new IdentityClient(
@@ -32,9 +30,29 @@ export class Client {
     }
 
     public static async create() {
-        const ssbClient = util.promisify(require('ssb-client'));
+        let ssbClient;
 
-        const client = new Client(await ssbClient());
+        if (process.versions.hasOwnProperty('electron')) {
+            ssbClient = await (new Promise((resolve, reject) => {
+                window.require('ssb-client')((error: any, client: any) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(client);
+                })
+            }));
+        } else {
+            ssbClient = await (new Promise((resolve, reject) => {
+                require('ssb-client')((error: any, client: any) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(client);
+                })
+            }));
+        }
+
+        const client = new Client(ssbClient);
 
         await client.init();
 

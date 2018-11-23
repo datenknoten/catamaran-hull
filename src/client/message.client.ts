@@ -1,4 +1,3 @@
-import * as util from 'util';
 import { Observable, from } from 'rxjs';
 
 import {
@@ -110,7 +109,14 @@ export class MessageClient extends AbstractClient {
         const post = this.factory.getPost(id);
 
         try {
-            const postData = await util.promisify(this.sbot.get)(id);
+            const postData = await (new Promise((resolve, reject) => {
+                this.sbot.get((error: any, data: any) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(data);
+                });
+            }));
 
             return this.parseMessage({
                 id,
