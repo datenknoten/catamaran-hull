@@ -7,6 +7,7 @@ export class PostMessage extends Message {
     public root?: PostMessage;
     public branches: PostMessage[] = [];
     public comments: PostMessage[] = [];
+    public lastActivity?: Date;
 
     public constructor() {
         super('post');

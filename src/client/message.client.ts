@@ -4,6 +4,7 @@ import {
     flatMap,
     map,
     distinct,
+    filter,
 } from 'rxjs/operators';
 
 import { PostMessage } from '../models/message/post-message.model';
@@ -12,23 +13,38 @@ import { pullToObserveable } from '../helpers/pull-to-observeable';
 import { AbstractClient } from "./abstract.client";
 import { Identity } from '../models/identity/identity.model';
 
+export type feedType = 'publicFeed' | 'identity' | 'mentions';
+
 export class MessageClient extends AbstractClient {
-    public fetchPublicFeed(startAt?: Date): Observable<PostMessage> {
+    private pageStatus = {
+        publicFeed: new Date(),
+        identity: new Date(),
+        mentions: new Date(),
+    };
+
+    public fetchPublicFeed(loadMore: boolean = false): Observable<PostMessage> {
+        if (loadMore === false) {
+            this.pageStatus.publicFeed = new Date();
+        }
 
         const query = {
             // live: true,
-            limit: 10,
+            limit: 20,
             reverse: true,
             query: [{
                 $filter: {
-                    timestamp: {
-                        $lt: (startAt instanceof Date ? +startAt : undefined),
-                    },
+                    // timestamp: {
+                    //     $lt: (startAt instanceof Date ? +startAt : undefined),
+                    // },
                     value: {
                         timestamp: {
-                            // forces results ordered by published time
+                            $lt: +this.pageStatus.publicFeed,
                             $gt: 0,
                         },
+                        // timestamp: {
+                        //     // forces results ordered by published time
+                        //     $gt: 0,
+                        // },
                         content: {
                             type: 'post',
                         },
@@ -37,7 +53,7 @@ export class MessageClient extends AbstractClient {
             }],
         };
 
-        return this.parseFeed(this.sbot.query.read(query));
+        return this.parseFeed('publicFeed', this.sbot.query.read(query));
     }
 
     public fetchIdentityFeed(identy: Identity): Observable<PostMessage> {
@@ -61,7 +77,7 @@ export class MessageClient extends AbstractClient {
             }],
         };
 
-        return this.parseFeed(this.sbot.query.read(query));
+        return this.parseFeed('identity', this.sbot.query.read(query));
     }
 
     public fetchMentions(identity: Identity): Observable<PostMessage> {
@@ -70,21 +86,30 @@ export class MessageClient extends AbstractClient {
             index: 'DTA',
         });
 
-        return this.parseFeed(backlinks);
+        return this.parseFeed('mentions', backlinks);
     }
 
-    private parseFeed(feed: any) {
+    private parseFeed(name: feedType, feed: any): Observable<PostMessage> {
         return pullToObserveable(feed)
             .pipe(
                 flatMap((data: any) => {
                     return from(this.parseMessage(data));
                 }),
                 map((post) => {
+                    const feedPageStatus = this.pageStatus[name];
+                    if (
+                        (typeof feedPageStatus === 'undefined') ||
+                            ((feedPageStatus instanceof Date) &&
+                             (feedPageStatus > post.createdAt))
+                    ) {
+                        this.pageStatus[name] = post.createdAt;
+                    }
                     if (post.root instanceof PostMessage) {
                         return post.root;
                     } else {
                         return post;
                     }
+
                 }),
                 distinct(),
 
@@ -95,6 +120,9 @@ export class MessageClient extends AbstractClient {
                     });
 
                     return pullToObserveable(backlinks).pipe(
+                        filter((data: any) => {
+                            return data.value.content.type === 'post'
+                        }),
                         flatMap((data: any) =>  {
                             return from(this.parseMessage(data));
                         }),
@@ -110,7 +138,7 @@ export class MessageClient extends AbstractClient {
 
         try {
             const postData = await (new Promise((resolve, reject) => {
-                this.sbot.get((error: any, data: any) => {
+                this.sbot.get(id, (error: any, data: any) => {
                     if (error) {
                         return reject(error);
                     }
@@ -124,6 +152,7 @@ export class MessageClient extends AbstractClient {
             });
         } catch(error) {
             console.warn(`failed to fetch post with id ${id}`);
+            console.warn(error);
             return post;
         }
     }
@@ -132,6 +161,9 @@ export class MessageClient extends AbstractClient {
         const post = this.factory.getPost(data.id ? data.id : data.key);
         if (typeof data.timestamp === 'number') {
             post.recievedAt = new Date(data.timestamp);
+        }
+        if (data.value === undefined) {
+            console.dir(data);
         }
         post.createdAt = new Date(data.value.timestamp);
         post.author = this.factory.getIdentity(data.value.author);
@@ -142,11 +174,19 @@ export class MessageClient extends AbstractClient {
         post.isMissing = false;
         post.channel = data.value.content.channel;
         post.text = data.value.content.text;
+        if (typeof post.lastActivity === 'undefined') {
+            post.lastActivity = post.createdAt;
+        }
         post.raw = data;
         if (typeof data.value.content.root === 'string') {
             post.root = this.factory.getPost(data.value.content.root);
             if (post.root.isMissing === true) {
                 await this.getPost(post.root.id);
+            }
+            if (typeof post.root.lastActivity === 'undefined') {
+                post.root.lastActivity = post.createdAt;
+            } else if (post.createdAt > post.root.lastActivity) {
+                post.root.lastActivity = post.createdAt;
             }
             if (!post.root.comments.includes(post)) {
                 post.root.comments.push(post);

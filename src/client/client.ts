@@ -32,25 +32,23 @@ export class Client {
     public static async create() {
         let ssbClient;
 
+        let customRequire: NodeRequire;
         if (process.versions.hasOwnProperty('electron')) {
-            ssbClient = await (new Promise((resolve, reject) => {
-                window.require('ssb-client')((error: any, client: any) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    resolve(client);
-                })
-            }));
+            customRequire = window.require;
         } else {
-            ssbClient = await (new Promise((resolve, reject) => {
-                require('ssb-client')((error: any, client: any) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    resolve(client);
-                })
-            }));
+            // Need this hack to escape webpack, which will try to evaluate
+            // require('ssb-client') and will utterly fail with that.
+            customRequire = eval(`require`);
         }
+
+        ssbClient = await (new Promise((resolve, reject) => {
+            customRequire('ssb-client')((error: any, client: any) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(client);
+            })
+        }));
 
         const client = new Client(ssbClient);
 

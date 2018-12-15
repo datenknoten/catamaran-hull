@@ -60,6 +60,10 @@ export class IdentityClient extends AbstractClient {
             });
         });
 
+        if (image.startsWith('@')) {
+            return identity;
+        }
+
         const id_image = new IdentityImage();
         id_image.blobId = image;
         id_image.identity = identity;
