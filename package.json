@@ -2,7 +2,7 @@
     "name": "@catamaran/hull",
     "public": true,
     "version": "0.2.0",
-    "description": "rumpf is an approach to make building secure scuttlebut applications more easy\r by providing a single interface for everything™.",
+    "description": "hull is an approach to make building scuttlebut applications more easy\r by providing a single interface for everything™.",
     "main": "dist/index.js",
     "directories": {
         "doc": "docs"
@@ -12,16 +12,24 @@
         "test": "ts-node test/test.ts"
     },
     "keywords": [
+        "typescript",
+        "scuttlebutt",
         "ssb",
         "client"
     ],
+    "bugs": {
+        "url": "https://github.com/datenknoten/catamaran-hull/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/datenknoten/catamaran-hull"
+    },
     "author": "Tim Schumacher <tim@datenknoten.me>",
     "license": "MIT",
     "dependencies": {
         "ssb-client": "4.6.0",
         "pull-stream": "3.6.9",
-        "rxjs": "6.3.3",
-        "native-require": "1.1.4"
+        "rxjs": "6.3.3"
     },
     "devDependencies": {
         "@types/node": "^10.12.10",
