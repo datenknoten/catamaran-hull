@@ -1,10 +1,35 @@
-# Rumpf
+# Hull
 
-rumpf is an approach to make building secure scuttlebut applications more easy
-by providing a single interface for everything™.
+> the frame or body of a ship or boat exclusive of masts, yards, sails, and
+> rigging — [Ditcionary](https://www.merriam-webster.com/dictionary/hull)
 
-## What is a „rumpf“?
 
-„Rumpf“ is a german word and is translated into „hull“, which is the bottom part
-of a ship. „rumpf“ aims to be a solid foundation for all your scuttlebut
-endeavours.
+Hull is a library for building [Scuttlebutt]()-Clients. It converts it's
+datastructures into typed structure, which makes building a good client more
+easy.
+
+## How to use?
+
+First you need to install it:
+
+``` shell
+$ npm install --save @catamaran/hull
+```
+
+Then you need to create client and use it:
+
+``` typescript
+const client = await Client.create();
+
+const obs = client.message.fetchPublicFeed();
+
+obs.subscribe(data => {
+    console.dir({
+        data,
+    });
+});
+```
+
+**Imporant**: hull relies on a running scuttlebot to connect to the
+scuttleverse. Currently the most easy way to get a standalone scuttlebot is via
+[scuttle-shell](https://github.com/ssbc/scuttle-shell).
