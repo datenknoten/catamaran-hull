@@ -1,7 +1,7 @@
 {
     "name": "@catamaran/hull",
     "public": true,
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "hull is an approach to make building scuttlebut applications more easy\r by providing a single interface for everything™.",
     "main": "dist/index.js",
     "directories": {
