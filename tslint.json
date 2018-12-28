@@ -3,7 +3,12 @@
         "@datenknoten/tslint-config"
     ],
     "rules": {
+        "file-header": [
+            true,
+            "@License MIT",
+            "@License MIT"
+        ],
         "newline-per-chained-call": false,
-        "no-submodule-imports": [true, "rxjs", "@angular/platform-browser", "@angular/core/testing", "codemirror", "hypermd"]
+        "no-submodule-imports": [true, "rxjs"]
     }
 }

@@ -1,5 +1,5 @@
-import { IdentityName } from "./identity-name.model";
-import { IdentityImage } from "./identity-image.model";
+import { IdentityImage } from './identity-image.model';
+import { IdentityName } from './identity-name.model';
 
 export class Identity {
     public id: string;

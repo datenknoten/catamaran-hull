@@ -1,6 +1,6 @@
 import {
     Identity,
-} from './identity.model'
+} from './identity.model';
 
 export class IdentityImage {
     public blobId!: string;

@@ -9,7 +9,8 @@
     },
     "scripts": {
         "build": "tsc",
-        "test": "ts-node test/test.ts"
+        "test": "ts-node test/test.ts",
+        "lint": "tslint -p tsconfig.json"
     },
     "keywords": [
         "typescript",
@@ -27,15 +28,18 @@
     "author": "Tim Schumacher <tim@datenknoten.me>",
     "license": "MIT",
     "dependencies": {
-        "ssb-client": "4.6.0",
+        "luxon": "1.8.3",
         "pull-stream": "3.6.9",
-        "rxjs": "6.3.3"
+        "rxjs": "6.3.3",
+        "ssb-client": "4.6.0"
     },
     "devDependencies": {
-        "@types/node": "^10.12.10",
-        "tslint": "^5.11.0",
-        "typescript": "^3.1.6",
+        "@datenknoten/tslint-config": "^0.2.0",
+        "@types/luxon": "1.4.1",
+        "@types/node": "10.12.10",
         "ts-node": "7.0.1",
-        "tslint-language-service": "0.9.9"
+        "tslint": "5.11.0",
+        "tslint-language-service": "0.9.9",
+        "typescript": "3.1.6"
     }
 }

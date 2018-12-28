@@ -1,5 +1,6 @@
-import { ObjectFactory } from "../helpers/object-factory";
-import { Client } from "./client";
+import { ObjectFactory } from '../helpers/object-factory';
+
+import { Client } from './client';
 
 export abstract class AbstractClient {
     protected sbot: any;

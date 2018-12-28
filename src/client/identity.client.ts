@@ -1,6 +1,7 @@
-import { Identity } from "../models/identity/identity.model";
 import { IdentityImage } from '../models/identity/identity-image.model';
 import { IdentityName } from '../models/identity/identity-name.model';
+import { Identity } from '../models/identity/identity.model';
+
 import { AbstractClient } from './abstract.client';
 
 export class IdentityClient extends AbstractClient {

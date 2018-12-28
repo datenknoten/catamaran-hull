@@ -1,4 +1,4 @@
-import { Client } from "../src";
+import { Client, Gathering } from "../src";
 
 (async function() {
     try {
@@ -7,9 +7,11 @@ import { Client } from "../src";
         const obs = client.message.fetchPublicFeed();
 
         obs.subscribe(data => {
-            console.dir({
-                data,
-            }, { depth: 0 });
+            if (data instanceof Gathering) {
+                console.dir({
+                    data: data.metadata,
+                }, { depth: 2 });
+            }
         });
         // process.exit(0);
     } catch(error) {

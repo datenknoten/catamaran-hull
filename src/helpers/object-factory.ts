@@ -1,25 +1,36 @@
-import { PostMessage } from "../models/message/post-message.model";
-import { Identity } from "../models/identity/identity.model";
+/*!
+ * @License MIT
+ */
+
+import { Identity } from '../models/identity/identity.model';
+import { Content, ContentConstructor } from '../models/post/content.type';
 
 type ObjectFactoryCache = {
     posts: {
-        [index: string]: PostMessage
+        [index: string]: Content | undefined,
     },
     identities: {
         [index: string]: Identity,
-    }
-}
+    },
+};
 
+/**
+ * The object cache
+ */
 export class ObjectFactory {
     private _cache: ObjectFactoryCache = {
         posts: {},
-        identities: {}
-    }
+        identities: {},
+    };
 
-    public getPost(id: string): PostMessage {
+    /**
+     * Either return or create a post stub
+     */
+    public getPost(id: string, contentConstructor: ContentConstructor): Content {
         let post = this._cache.posts[id];
-        if (!(post instanceof PostMessage)) {
-            post = new PostMessage();
+
+        if (typeof post === 'undefined') {
+            post = new contentConstructor();
             post.id = id;
             this._cache.posts[id] = post;
         }
@@ -27,6 +38,16 @@ export class ObjectFactory {
         return post;
     }
 
+    /**
+     * Just return the enity from the cache
+     */
+    public findPost(id: string): Content | undefined {
+        return this._cache.posts[id];
+    }
+
+    /**
+     * Either return or create a identity stub
+     */
     public getIdentity(id: string): Identity {
         let identity = this._cache.identities[id];
         if (!(identity instanceof Identity)) {

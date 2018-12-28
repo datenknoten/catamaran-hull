@@ -1,3 +1,7 @@
+/*!
+ * @License MIT
+ */
+
 import { ObjectFactory } from '../helpers/object-factory';
 
 import { IdentityClient } from './identity.client';
@@ -5,13 +9,12 @@ import { MessageClient } from './message.client';
 
 
 export class Client {
-    private sbot: any;
 
     public identity: IdentityClient;
     public message: MessageClient;
+    private sbot: any;
 
     private factory: ObjectFactory;
-
 
 
     private constructor(sbot?: any) {
@@ -33,13 +36,13 @@ export class Client {
         let ssbClient;
 
         let customRequire: NodeRequire;
-        if (process.versions.hasOwnProperty('electron')) {
-            customRequire = window.require;
-        } else {
+        // if (process.versions.hasOwnProperty('electron')) {
+        //     customRequire = window.require;
+        // } else {
             // Need this hack to escape webpack, which will try to evaluate
             // require('ssb-client') and will utterly fail with that.
             customRequire = eval(`require`);
-        }
+        //}
 
         ssbClient = await (new Promise((resolve, reject) => {
             customRequire('ssb-client')((error: any, client: any) => {
@@ -47,7 +50,7 @@ export class Client {
                     return reject(error);
                 }
                 resolve(client);
-            })
+            });
         }));
 
         const client = new Client(ssbClient);
