@@ -62,7 +62,10 @@ export class MessageClient extends AbstractClient {
                         },
                         content: {
                             type: {
-                                $in: ['post', 'gathering'],
+                                $in: [
+                                    'post',
+                                    'gathering',
+                                ],
                             },
                         },
                     },
@@ -270,10 +273,12 @@ export class MessageClient extends AbstractClient {
             post.content = content.description;
 
             if (typeof content.startDateTime === 'object') {
-                const startDate = DateTime.fromMillis(content.startDateTime.epoch, {
-                    zone: content.startDateTime.tz,
-                });
-                post.startDate = startDate;
+                if (typeof content.startDateTime.epoch === 'number') {
+                    const startDate = DateTime.fromMillis(content.startDateTime.epoch, {
+                        zone: content.startDateTime.tz,
+                    });
+                    post.startDate = startDate;
+                }
             }
 
             const gathering = this.factory.findPost(content.about);
@@ -282,8 +287,16 @@ export class MessageClient extends AbstractClient {
                     gathering.metadata.push(post);
                 }
             }
-
-            // console.dir(data.value);
+        }
+        if (post instanceof GatheringAttendee) {
+            const content = data.value.content;
+            post.identity = this.factory.getIdentity(content.attendee.link);
+            const gathering = this.factory.findPost(content.about);
+            if (gathering instanceof Gathering) {
+                if (!(gathering.metadata.map(item => item.id).includes(post.id))) {
+                    gathering.attendees.push(post);
+                }
+            }
         }
         if (typeof post.lastActivity === 'undefined') {
             post.lastActivity = post.createdAt;
