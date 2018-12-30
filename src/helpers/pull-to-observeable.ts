@@ -1,16 +1,28 @@
+/*!
+ * @License MIT
+ */
+
 import { Observable, Subject } from 'rxjs';
 
 const pull = require('pull-stream');
 
-export function pullToObserveable(pullStream: any): Observable<any> {
-    const obs = new Subject();
+/**
+ * Convert a pull stream to an observable
+ */
+export function pullToObserveable(pullStream: unknown): Observable<unknown> {
+    const obs = new Subject<unknown>();
 
     pull(
         pullStream,
-        pull.collect((err: any, data: any) => {
+        pull.collect((err: string | Error | null, data: Array<unknown>) => {
             if (err !== null) {
-                obs.next(new Error(err));
+                if (err instanceof Error) {
+                    obs.next(err);
+                } else {
+                    obs.next(new Error(err));
+                }
             }
+
             for (const item of data) {
                 obs.next(item);
             }
