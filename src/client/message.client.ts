@@ -51,7 +51,7 @@ export class MessageClient extends AbstractClient {
 
         const query = {
             // live: true,
-            limit: 50,
+            limit: 20,
             reverse: true,
             query: [{
                 $filter: {
@@ -148,16 +148,8 @@ export class MessageClient extends AbstractClient {
                     });
 
                     return pullToObserveable(backlinks).pipe(
-                        // filter((data: ssbData) => data.value.content.type === 'post'),
                         flatMap((data: ssbData) =>  {
                             return from(this.parsePost(data));
-                        }),
-                        tap((_data: Content) => {
-                            // if (data instanceof GatheringMetadata) {
-                            //     console.dir({
-                            //         tapData: data,
-                            //     }, { depth: 1 });
-                            // }
                         }),
                         map(() => post),
                     );
