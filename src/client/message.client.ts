@@ -8,7 +8,6 @@ import {
     distinct,
     flatMap,
     map,
-    tap,
 } from 'rxjs/operators';
 
 import { pullToObserveable } from '../helpers/pull-to-observeable';
@@ -61,12 +60,14 @@ export class MessageClient extends AbstractClient {
                             $gt: 0,
                         },
                         content: {
-                            type: {
-                                $in: [
-                                    'post',
-                                    'gathering',
-                                ],
-                            },
+                            type: 'post',
+                            // Somehow this returns rubish results, needs to figure out why?!
+                            // type: {
+                            //     $in: [
+                            //         'post',
+                            //         'gathering',
+                            //     ],
+                            // },
                         },
                     },
                 },
@@ -122,6 +123,10 @@ export class MessageClient extends AbstractClient {
         return pullToObserveable(feed)
             .pipe(
                 flatMap((data: unknown) => {
+                    // console.log({
+                    //     channel: (data as any).value.content.channel,
+                    //     type: (data as any).value.content.type,
+                    // });
                     return from(this.parsePost(data));
                 }),
                 map((post) => {
@@ -162,6 +167,9 @@ export class MessageClient extends AbstractClient {
      * Retrieve a single post from the database
      */
     private async getPost(id: string) {
+        if (id === '') {
+            return undefined;
+        }
         try {
             const postData = await (new Promise((resolve, reject) => {
                 this.sbot.get(id, (error: ssbData, data: ssbData) => {
@@ -178,7 +186,7 @@ export class MessageClient extends AbstractClient {
                 value: postData,
             });
         } catch (error) {
-            console.warn(`failed to fetch post with id ${id}`);
+            console.trace(`failed to fetch post with id ${id}`);
             console.warn(error);
             return this.factory.getPost(id, Message);
         }
@@ -303,7 +311,10 @@ export class MessageClient extends AbstractClient {
                 } else if (post.createdAt > post.root.lastActivity) {
                     post.root.lastActivity = post.createdAt;
                 }
-                if (!post.root.comments.includes(post)) {
+                if (
+                    (post instanceof Message) &&
+                        (typeof post.root !== 'undefined') &&
+                        (!post.root.comments.includes(post))) {
                     post.root.comments.push(post);
                 }
             }
