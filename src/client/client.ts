@@ -44,12 +44,15 @@ export class Client {
             customRequire = eval(`require`);
         //}
 
-        ssbClient = await (new Promise((resolve, reject) => {
-            customRequire('ssb-client')((error: any, client: any) => {
+        ssbClient = await (new Promise<unknown>((resolve, reject) => {
+            customRequire('ssb-client')({
+                host: '2003:e0:6f19:cc00:3d71:fdfb:7ea5:9a6e',
+            }, (error: unknown, _client: unknown) => {
                 if (error) {
-                    return reject(error);
+                    reject(error);
+                    return;
                 }
-                resolve(client);
+                resolve(_client);
             });
         }));
 

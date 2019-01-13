@@ -9,7 +9,7 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "target": "es2017",
-        "strict": true,
+        "strict": false,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
@@ -27,6 +27,7 @@
         ]
     },
     "include": [
-        "src"
+        "src",
+        "test"
     ]
 }

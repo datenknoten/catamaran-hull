@@ -1,0 +1,45 @@
+{
+    "description": "validate a contact about content type",
+    "type": "object",
+    "required": [
+        "author",
+        "sequence",
+        "timestamp",
+        "content"
+    ],
+    "properties": {
+        "author": {
+            "type": "string"
+        },
+        "sequence": {
+            "type": "number"
+        },
+        "previous": {
+            "type": "string"
+        },
+        "timestamp": {
+            "type": "number"
+        },
+        "hash": {
+            "type": "string"
+        },
+        "previous": {
+            "type": "string"
+        },
+        "content": {
+            "type": "object",
+            "required": [
+                "type",
+                "about"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
