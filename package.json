@@ -10,7 +10,9 @@
     "scripts": {
         "build": "tsc",
         "test": "ts-node test/test.ts",
-        "lint": "tslint -p tsconfig.json"
+        "lint": "tslint -p tsconfig.json",
+        "analytics": "ts-node test/analytics.ts",
+        "typeorm": "ts-node node_modules/typeorm/cli.js"
     },
     "keywords": [
         "typescript",
@@ -31,7 +33,10 @@
         "luxon": "1.8.3",
         "pull-stream": "3.6.9",
         "rxjs": "6.3.3",
-        "ssb-client": "4.6.0"
+        "sodium-native": "2.2.4",
+        "sqlite3": "^4.0.6",
+        "ssb-client": "4.6.0",
+        "typeorm": "0.2.11"
     },
     "devDependencies": {
         "@datenknoten/tslint-config": "^0.2.0",

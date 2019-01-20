@@ -1,3 +1,7 @@
+/*!
+ * @License MIT
+ */
+
 import { ObjectFactory } from '../helpers/object-factory';
 
 import { Client } from './client';
