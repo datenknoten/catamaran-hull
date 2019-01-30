@@ -11,6 +11,7 @@ import {
 import { Post } from '../post.model';
 
 import { Identity } from '../../identity/identity.model';
+
 import { Gathering } from './gathering.model';
 
 /**

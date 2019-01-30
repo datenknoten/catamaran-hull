@@ -12,7 +12,9 @@
         "test": "ts-node test/test.ts",
         "lint": "tslint -p tsconfig.json",
         "analytics": "ts-node test/analytics.ts",
-        "typeorm": "ts-node node_modules/typeorm/cli.js"
+        "typeorm": "node -r ts-node/register node_modules/typeorm/cli.js",
+        "crunch": "node -r ts-node/register test/cruncher.ts",
+        "crunch:debug": "node --inspect-brk -r ts-node/register test/cruncher.ts"
     },
     "keywords": [
         "typescript",
@@ -36,7 +38,9 @@
         "sodium-native": "2.2.4",
         "sqlite3": "^4.0.6",
         "ssb-client": "4.6.0",
-        "typeorm": "0.2.11"
+        "typeorm": "0.2.11",
+        "class-transformer": "0.2.0",
+        "class-validator": "0.9.1"
     },
     "devDependencies": {
         "@datenknoten/tslint-config": "^0.2.0",

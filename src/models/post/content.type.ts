@@ -12,4 +12,5 @@ export type Content = Message | Gathering | Vote | GatheringMetadata | Tag;
 
 export interface ContentConstructor {
     new (): Content;
+    isType(data: unknown);
 }

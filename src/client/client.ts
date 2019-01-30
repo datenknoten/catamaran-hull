@@ -6,29 +6,43 @@ import { ObjectFactory } from '../helpers/object-factory';
 
 import { IdentityClient } from './identity.client';
 import { MessageClient } from './message.client';
+import { CruncherClient } from './cruncher.client';
+import { Connection, createConnection } from 'typeorm';
 
 
 export class Client {
 
     public identity: IdentityClient;
     public message: MessageClient;
+    public cruncher: CruncherClient;
     private sbot: any;
 
     private factory: ObjectFactory;
 
 
-    private constructor(sbot?: any) {
+    private constructor(
+        connection: Connection,
+        sbot?: any,
+    ) {
         this.sbot = sbot;
         this.factory = new ObjectFactory();
         this.identity = new IdentityClient(
             this,
             this.factory,
             this.sbot,
+            connection,
         );
         this.message = new MessageClient(
             this,
             this.factory,
             this.sbot,
+            connection,
+        );
+        this.cruncher = new CruncherClient(
+            this,
+            this.factory,
+            this.sbot,
+            connection,
         );
     }
 
@@ -45,9 +59,7 @@ export class Client {
         //}
 
         ssbClient = await (new Promise<unknown>((resolve, reject) => {
-            customRequire('ssb-client')({
-                host: '2003:e0:6f19:cc00:3d71:fdfb:7ea5:9a6e',
-            }, (error: unknown, _client: unknown) => {
+            customRequire('ssb-client')((error: unknown, _client: unknown) => {
                 if (error) {
                     reject(error);
                     return;
@@ -56,7 +68,9 @@ export class Client {
             });
         }));
 
-        const client = new Client(ssbClient);
+        const connection = await createConnection();
+
+        const client = new Client(connection, ssbClient);
 
         await client.init();
 

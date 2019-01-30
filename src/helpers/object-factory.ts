@@ -18,6 +18,8 @@ type ObjectFactoryCache = {
  * The object cache
  */
 export class ObjectFactory {
+    public static instance = new ObjectFactory();
+
     private _cache: ObjectFactoryCache = {
         posts: {},
         identities: {},

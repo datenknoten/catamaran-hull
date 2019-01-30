@@ -2,16 +2,22 @@
  * @License MIT
  */
 
-import { Content, ContentConstructor } from '../models/post/content.type';
-import { GatheringAttendee } from '../models/post/gatherings/gathering-attendee.model';
-import { GatheringMetadata } from '../models/post/gatherings/gathering-metadata.model';
-import { Gathering } from '../models/post/gatherings/gathering.model';
-import { IdentityDescription } from '../models/post/identity-description.model';
-import { Message } from '../models/post/message.model';
-import { Tag } from '../models/post/tag.model';
-import { Vote } from '../models/post/vote.model';
+import {
+    plainToClass,
+} from 'class-transformer';
+
+import { MetadataStore } from '../helpers/meta-data';
+import {
+    // Content,
+    ContentConstructor,
+} from '../models/post/content.type';
 
 import { AbstractClient } from './abstract.client';
+import { Post } from '../models/post/post.model';
+import { DateTime } from 'luxon';
+
+
+const pull = require('pull-stream');
 
 /**
  * The cruncher subscribes a live stream on all
@@ -21,63 +27,157 @@ export class CruncherClient extends AbstractClient {
     /**
      * Crunch the feed and put it into the database
      */
-    public crunch() {
+    public async crunch() {
+        const start = DateTime.fromJSDate(new Date());
+        const queryRunner = this.database.createQueryRunner();
         const feed = this.sbot.createFeedStream({
-            live: true,
+            live: false,
         });
+        const intervalElements = 2000;
+        let count = 0;
+        let missing = 0;
+        let interval = DateTime.fromJSDate(new Date());
+
+        await queryRunner.startTransaction();
 
         pull(
             feed,
-            pull.drain((data: unknown) => {
-                const content = this.detectContent(data);
-            }, (err) => {
-                if (err) {
+            pull.asyncMap(async (data, cb) => {
+                let content;
+                try {
+                    const contentType = this.detectContent(data);
+                    if (typeof contentType === 'undefined') {
+                        cb(null, data);
+                        return;
+                    }
+                    content = plainToClass(contentType, data);
+                    const result = await queryRunner.manager.findOne(contentType, content.id);
+                    if (typeof result === 'undefined') {
+                        await queryRunner.manager.save(content);
+                        missing++;
+                    }
+
+                    const createdAt = ((content) as Post).createdAt;
+                    if ((count % intervalElements) === 1) {
+                        const rs = Math.ceil(intervalElements / interval.diffNow(['seconds']).seconds*-1);
+                        console.dir(`${createdAt.year}-${createdAt.month}-${createdAt.day}: Processed ${count} records (${rs} r/s), missing: ${missing}`);
+                        interval = DateTime.fromJSDate(new Date());
+                    }
+                    count++;
+                    // if ((count % 10000) === 1) {
+                    //     await queryRunner.commitTransaction();
+                    //     // console.dir('Commiting 10000 records');
+                    //     await queryRunner.startTransaction();
+                    // }
+                    cb(null, data);
+                } catch(error) {
+                    console.dir(data);
+                    console.dir(content);
+                    console.dir(error);
+                    process.exit(1);
+                }
+            }),
+            pull.drain(() => {}, async (err) => {
+                const diff = start.diffNow(['minutes', 'seconds']).toObject();
+                if (err === null) {
+                    await queryRunner.commitTransaction();
+                    await this.database.close();
+                    console.dir({
+                        txt: 'time ellapsed since start',
+                        count,
+                        diff,
+                    });
+                    process.exit(0);
+                } else if (err !== true) {
                     throw err;
+                } else {
+                    await queryRunner.commitTransaction();
+                    await this.database.close();
+                    console.dir({
+                        txt: 'time ellapsed since start',
+                        count,
+                        diff,
+                    });
+                    process.exit(0);
                 }
             }),
         );
     }
 
-    private detectContent(data: unknown): ContentConstructor {
-        let postType;
-        try {
-            const content = data.value.content;
-            const contentType = content.type;
-            // about is used by either gatherings or identiy description so we have to distinguish them
-            if (contentType === 'about') {
-                if (typeof content.about === 'string') {
-                    if (typeof content.title === 'string') {
-                        postType = 'gathering/about';
-                    } else if (typeof content.attendee === 'object' && typeof data.value.content.attendee.link === 'string') {
-                        postType = 'gathering/attendee';
-                    }
-                } else {
-                    postType = 'identity/about';
-                }
-            } else {
-                postType = contentType;
+    /**
+     * Detect the content type of the item
+     */
+    // tslint:disable-next-line
+    private detectContent(data: any): ContentConstructor {
+        for (const contentType of MetadataStore.instance.contentTypes) {
+            if (contentType.isType(data)) {
+                return contentType;
             }
-        } catch (error) {
-            console.error('could not determine postType');
-            console.dir({ error, data }, { depth: 3  });
         }
+        // let postType;
+        // try {
+        //     const content = data.value.content;
+        //     if (typeof content === 'string') {
+        //         postType = 'encrypted';
+        //     } else {
+        //         const contentType = content.type;
+        //         // about is used by either gatherings or identiy description so we have to distinguish them
+        //         if (contentType === 'about') {
+        //             if (typeof content.about === 'string') {
+        //                 if (typeof content.title === 'string') {
+        //                     postType = 'gathering/about';
+        //                 } else if (
+        //                     typeof content.attendee === 'object' &&
+        //                         typeof data.value.content.attendee.link === 'string'
+        //                 ) {
+        //                     postType = 'gathering/attendee';
+        //                 } else if (
+        //                     typeof content.name === 'string' ||
+        //                         typeof content.image === 'string'
+        //                 ) {
+        //                     postType = 'identity/about';
+        //                 }
+        //             } else if (typeof content.rating === 'string') {
+        //                 postType = 'book/about';
+        //             }
+        //         } else {
+        //             postType = contentType;
+        //         }
+        //     }
 
-        if (postType === 'post') {
-            return Message;
-        } else if (postType === 'gathering') {
-            return Gathering;
-        } else if (postType === 'vote') {
-            return Vote;
-        } else if (postType === 'gathering/about') {
-            return GatheringMetadata;
-        } else if (postType === 'gathering/attendee') {
-            return GatheringAttendee;
-        } else if (postType === 'identity/about') {
-            return IdentityDescription;
-        } else if (postType === 'tag') {
-            return Tag;
-        } else {
-            throw new Error(`Unknown post type ${postType}`);
-        }
+        // } catch (error) {
+        //     throw new Error('could not determine postType');
+        // }
+
+        // if (postType === 'post') {
+        //     return Message;
+        // } else if (postType === 'gathering') {
+        //     return Gathering;
+        // } else if (postType === 'vote') {
+        //     return Vote;
+        // } else if (postType === 'gathering/about') {
+        //     return GatheringMetadata;
+        // } else if (postType === 'gathering/attendee') {
+        //     return GatheringAttendee;
+        // } else if (postType === 'identity/about') {
+        //     return IdentityDescription;
+        // } else if (postType === 'tag') {
+        //     return Tag;
+        // } else if (postType === 'bookclub') {
+        //     return BookClub;
+        // } else if (postType === 'bookclub/description') {
+        //     return BookClubDescription;
+        // } else if (postType === 'contact') {
+        //     return Subscription;
+        // } else if (postType === 'encrypted') {
+        //     return EncryptedContent;
+        // } else if (postType === 'pub') {
+        //     return Pub;
+        // } else if (postType === 'flag') {
+        //     return Flag;
+        // } else {
+        //     /*console.dir(data);
+        //     throw new Error(`Unknown post type ${postType}`);*/
+        // }
     }
 }

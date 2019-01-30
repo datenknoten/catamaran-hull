@@ -1,9 +1,4 @@
-import { pullToObserveable } from '../src/helpers/pull-to-observeable';
-// import  * as util from 'util';
-
-// import {
-//     take,
-// } from 'rxjs/operators';
+const pull = require('pull-stream');
 
 const stats = {};
 
@@ -48,9 +43,7 @@ function calculateStats(data: any, stats: any) {
 
 (async function(){
     const ssbClient = await (new Promise<any>((resolve, reject) => {
-        require('ssb-client')({
-            host: '2003:e0:6f19:cc00:3d71:fdfb:7ea5:9a6e',
-        }, (error: any, _client: any) => {
+        require('ssb-client')((error: any, _client: any) => {
             if (error) {
                 reject(error);
                 return;
@@ -61,22 +54,20 @@ function calculateStats(data: any, stats: any) {
 
     const feed = ssbClient.createFeedStream();
 
-    const obs = pullToObserveable(feed);
-
-    obs
-        .pipe(
-            // take(5),
-        )
-        .subscribe((data: any) => {
-            if (data === null) {
-                console.log(JSON.stringify(stats));
-                process.exit(0);
-                return;
-            }
+    pull(
+        feed,
+        pull.drain((data: any) => {
             const contentType = data.value.content.type;
             if (!(isNested(stats[contentType]))) {
                 stats[contentType] = {};
             }
             calculateStats(data.value, stats[contentType]);
-        });
+        }, (err) => {
+            if (err) {
+                throw err;
+            }
+            console.log(JSON.stringify(stats));
+            process.exit(0);
+        }),
+    );
 })();
