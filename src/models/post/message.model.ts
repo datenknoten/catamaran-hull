@@ -10,11 +10,19 @@ import {
 import {
     Column,
     Entity,
+    OneToMany,
+    ManyToOne,
+    JoinColumn,
+    // JoinColumn,
+    // ManyToOne,
 } from 'typeorm';
 
 import { ContentType } from '../../decorators/content-type.decorator';
 
 import { Post } from './post.model';
+import { ObjectFactory } from '../../helpers/object-factory';
+
+const ssbRef = require('ssb-ref');
 
 /**
  * Message content type
@@ -23,10 +31,38 @@ import { Post } from './post.model';
 @Exclude()
 @ContentType()
 export class Message extends Post {
-    @Column()
+    @Column({
+        nullable: true,
+    })
     @Expose()
     @Transform((_value, obj) => obj.value.content.text)
     public text?: string;
+
+    @OneToMany(
+        () => Message,
+        (message: Message) => message.root,
+    )
+    public comments!: Message[];
+
+    @ManyToOne(
+        () => Message,
+        {
+            cascade: [
+                'insert',
+                'update',
+            ],
+        },
+    )
+    @JoinColumn({
+        name: 'root_id',
+    })
+    @Expose()
+    @Transform((_value, obj) => {
+        if (ssbRef.isMsg(obj.value.content.root)) {
+            return ObjectFactory.instance.getPost(obj.value.content.root, Message);
+        }
+    })
+    public root: Message | undefined;
 
     public constructor() {
         super('message');

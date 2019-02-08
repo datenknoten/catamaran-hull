@@ -11,6 +11,7 @@ import {
 import { DateTime } from 'luxon';
 import {
     Column,
+    Index,
     JoinColumn,
     ManyToOne,
     PrimaryColumn,
@@ -20,9 +21,11 @@ import { DateTimeTransformer } from '../../helpers/datetime-transformer';
 import { Identity } from '../identity/identity.model';
 
 import { ContentConstructor } from './content.type';
-import { Message } from './message.model';
+// import { Message } from './message.model';
 import { Vote } from './vote.model';
 import { ObjectFactory } from '../../helpers/object-factory';
+
+const ssbRef = require('ssb-ref');
 
 /**
  * The basic content unit available in scuttlebutt
@@ -38,6 +41,7 @@ export abstract class Post {
     @Column({
         type: 'datetime',
         name: 'recieved_at',
+        nullable: true,
         transformer: new DateTimeTransformer(),
     })
     @Expose({
@@ -49,13 +53,13 @@ export abstract class Post {
     @Column({
         type: 'datetime',
         name: 'created_at',
+        nullable: true,
         transformer: new DateTimeTransformer(),
     })
     @Expose()
     @Transform((_value, obj) => DateTime.fromMillis(obj.value.timestamp))
     public createdAt!: DateTime;
 
-    // @Column()
     @ManyToOne(
         () => Identity,
         {
@@ -63,6 +67,7 @@ export abstract class Post {
                 'insert',
                 'update',
             ],
+            nullable: true,
         },
     )
     @JoinColumn({
@@ -74,25 +79,34 @@ export abstract class Post {
 
     @Column({
         nullable: true,
-        name: 'root_id',
-    })
-    @Expose()
-    @Transform((_value, obj) => obj.value.content.root)
-    public root?: string;
-
-    @Column({
-        nullable: true,
     })
     @Expose()
     @Transform((_value, obj) => obj.value.content.channel, { toClassOnly: true })
     public channel?: string;
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     @Expose()
     @Transform((_value, obj) => obj.value.sequence, { toClassOnly: true })
     public sequence!: number;
 
-    @Column()
+    @Column({
+        nullable: true,
+        name: 'root_id',
+    })
+    @Index()
+    @Expose()
+    @Transform((_value, obj) => {
+        if (ssbRef.isMsg(obj.value.content.root)) {
+            return obj.value.content.root;
+        }
+    })
+    public rootId?: string;
+
+    @Column({
+        nullable: true,
+    })
     @Expose()
     @Transform((_value, obj) => obj.value.hash, { toClassOnly: true })
     public hash!: string;
@@ -117,8 +131,7 @@ export abstract class Post {
     @Transform((_value, obj) => obj, { toClassOnly: true })
     public raw?: unknown;
 
-    public branches: Message[] = [];
-    public comments: Message[] = [];
+    // public branches: Message[] = [];
     public lastActivity?: Date;
     public votes: Vote[] = [];
 

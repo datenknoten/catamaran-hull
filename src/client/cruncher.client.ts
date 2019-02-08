@@ -5,17 +5,17 @@
 import {
     plainToClass,
 } from 'class-transformer';
+import { DateTime } from 'luxon';
 
 import { MetadataStore } from '../helpers/meta-data';
 import {
     // Content,
     ContentConstructor,
 } from '../models/post/content.type';
+import { Post } from '../models/post/post.model';
 
 import { AbstractClient } from './abstract.client';
-import { Post } from '../models/post/post.model';
-import { DateTime } from 'luxon';
-
+import { Message } from '../models/post/message.model';
 
 const pull = require('pull-stream');
 
@@ -51,8 +51,13 @@ export class CruncherClient extends AbstractClient {
                         return;
                     }
                     content = plainToClass(contentType, data);
+                    (content as Post).isMissing = false;
                     const result = await queryRunner.manager.findOne(contentType, content.id);
-                    if (typeof result === 'undefined') {
+
+                    if (typeof result === 'undefined' || (result.isMissing === true)) {
+                        if (content instanceof Message && content.root instanceof Message) {
+                            await queryRunner.manager.save(content.root);
+                        }
                         await queryRunner.manager.save(content);
                         missing++;
                     }

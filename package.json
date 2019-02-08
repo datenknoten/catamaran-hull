@@ -32,15 +32,19 @@
     "author": "Tim Schumacher <tim@datenknoten.me>",
     "license": "MIT",
     "dependencies": {
+        "class-transformer": "0.2.0",
+        "class-validator": "0.9.1",
+        "flumecodec": "0.0.1",
+        "flumedb": "^1.0.4",
+        "flumelog-offset": "^3.3.2",
         "luxon": "1.8.3",
         "pull-stream": "3.6.9",
         "rxjs": "6.3.3",
         "sodium-native": "2.2.4",
         "sqlite3": "^4.0.6",
         "ssb-client": "4.6.0",
-        "typeorm": "0.2.11",
-        "class-transformer": "0.2.0",
-        "class-validator": "0.9.1"
+        "ssb-ref": "^2.13.9",
+        "typeorm": "0.2.11"
     },
     "devDependencies": {
         "@datenknoten/tslint-config": "^0.2.0",
